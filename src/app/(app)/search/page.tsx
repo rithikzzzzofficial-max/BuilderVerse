@@ -39,7 +39,7 @@ export default async function SearchPage({
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <SectionHeading eyebrow="Search everything" title="Find your next step" />
+      <SectionHeading level="h1" eyebrow="Search everything" title="Find your next step" />
 
       <form action="/search" role="search">
         <div className="relative">

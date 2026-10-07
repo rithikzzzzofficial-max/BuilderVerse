@@ -31,6 +31,7 @@ export default async function ThinkingPage() {
     <div className="space-y-6">
       <section className="flex flex-wrap items-end justify-between gap-4">
         <SectionHeading
+          level="h1"
           eyebrow="No code required"
           title="Thinking Gym"
           sub="Programmers are hired for how they think, not how fast they type. These puzzles train decomposition, edge-case hunting and calm reasoning — the habits you will use in every interview and every bug."

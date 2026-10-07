@@ -36,7 +36,7 @@ export default async function PathPage({ params }: { params: Promise<{ path: str
         </Link>
 
         <div className="mt-3 flex flex-wrap items-start justify-between gap-4">
-          <SectionHeading eyebrow={path.tagline} title={path.title} sub={path.description} />
+          <SectionHeading level="h1" eyebrow={path.tagline} title={path.title} sub={path.description} />
           <span className="grid size-14 place-items-center rounded-2xl bg-surface-2 text-brand ring-1 ring-line">
             <Icon name={path.icon} size={26} />
           </span>

@@ -21,6 +21,7 @@ export default async function BuildPage() {
     <div className="space-y-6">
       <section className="flex flex-wrap items-end justify-between gap-4">
         <SectionHeading
+          level="h1"
           eyebrow="Put a real build on your resume"
           title="Guided projects"
           sub="Reading only takes you so far — these walk you through complete, showable builds. Finish the checklist and you have a portfolio piece people can actually click."

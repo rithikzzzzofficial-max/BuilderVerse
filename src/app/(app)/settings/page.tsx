@@ -17,7 +17,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <SectionHeading eyebrow="Your account" title="Settings" sub="Tune your Builder ID, preferences and security." />
+      <SectionHeading level="h1" eyebrow="Your account" title="Settings" sub="Tune your Builder ID, preferences and security." />
 
       <Card>
         <h2 className="mb-4 text-base font-bold text-ink">Profile</h2>

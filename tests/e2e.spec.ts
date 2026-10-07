@@ -143,4 +143,33 @@ test.describe("BuilderVerse", () => {
     await searchBox.press("Enter");
     await page.waitForURL(/\/search\?q=dom/);
   });
+
+  test("every page has exactly one h1", async ({ page }) => {
+    await signup(page);
+
+    const routes = [
+      "/dashboard",
+      "/learn",
+      "/learn/html",
+      "/learn/html/html-your-first-page",
+      "/think",
+      "/think/three-buttons-one-bulb",
+      "/debug",
+      "/debug/typo-in-variable",
+      "/build",
+      "/build/calculator",
+      "/ideas",
+      "/ideas/student-study-planner",
+      "/assistant",
+      "/search?q=flexbox",
+      "/profile",
+      "/settings",
+    ];
+
+    for (const route of routes) {
+      await page.goto(route);
+      const count = await page.locator("h1").count();
+      expect(count, `${route} should render exactly one h1`).toBe(1);
+    }
+  });
 });

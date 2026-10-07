@@ -207,18 +207,22 @@ export function SectionHeading({
   title,
   sub,
   align = "left",
+  level = "h2",
 }: {
   eyebrow?: string;
   title: string;
   sub?: string;
   align?: "left" | "center";
+  /** Set to "h1" when this heading is the page title. */
+  level?: "h1" | "h2";
 }) {
+  const Heading = level;
   return (
     <div className={clsx("max-w-2xl", align === "center" && "mx-auto text-center")}>
       {eyebrow && (
         <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-brand">{eyebrow}</p>
       )}
-      <h2 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">{title}</h2>
+      <Heading className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">{title}</Heading>
       {sub && <p className="mt-2 text-sm leading-relaxed text-muted sm:text-base">{sub}</p>}
     </div>
   );

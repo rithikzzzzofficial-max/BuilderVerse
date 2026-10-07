@@ -27,6 +27,7 @@ export default async function IdeasPage() {
     <div className="space-y-6">
       <section className="flex flex-wrap items-end justify-between gap-4">
         <SectionHeading
+          level="h1"
           eyebrow="Portfolio fuel"
           title="Ideas Vault"
           sub="A drawer of real-world projects — each one broken into features and learning goals so you always know what to build next. Bookmark the ones that excite you."

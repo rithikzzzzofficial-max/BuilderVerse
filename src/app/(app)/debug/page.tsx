@@ -28,6 +28,7 @@ export default async function DebugIndexPage() {
     <div className="space-y-6">
       <section className="flex flex-wrap items-end justify-between gap-4">
         <SectionHeading
+          level="h1"
           eyebrow="Debugging practice"
           title="Error Companion"
           sub="Every bug is a puzzle, never a scolding. Read the symptom, inspect the code, explain the fix out loud — that is exactly how senior engineers debug at work."

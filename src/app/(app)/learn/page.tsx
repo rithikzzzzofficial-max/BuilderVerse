@@ -35,6 +35,7 @@ export default async function LearnPage() {
     <div className="space-y-6">
       <section className="flex flex-wrap items-end justify-between gap-4">
         <SectionHeading
+          level="h1"
           eyebrow="Web development"
           title="Learning paths"
           sub="Short, practical lessons with examples, exercises and a quiz at the end. Finish one path and you have real skills — not just notes."
