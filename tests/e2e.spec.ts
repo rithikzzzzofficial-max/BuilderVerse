@@ -33,8 +33,17 @@ test.describe("BuilderVerse", () => {
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toContainText("portfolio you built");
     await expect(page.getByRole("link", { name: "Start building free" })).toBeVisible();
+
+    // theme toggle works on the public pages too
+    await page.getByRole("button", { name: "Switch to dark theme" }).click();
+    await expect(page.locator("html")).toHaveClass(/dark/);
+
     await page.getByRole("link", { name: "Browse lessons" }).click();
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+
+    await page.goto("/about");
+    await page.getByRole("button", { name: "Switch to light theme" }).click();
+    await expect(page.locator("html")).not.toHaveClass(/dark/);
   });
 
   test("protected routes redirect anonymous visitors", async ({ page }) => {

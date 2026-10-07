@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Icon } from "@/components/icon-registry";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { builderLevels } from "@/content";
 
 export const metadata: Metadata = {
@@ -19,9 +20,12 @@ export default function AboutPage() {
             </span>
             BuilderVerse
           </Link>
-          <Link href="/login" className="bv-btn bv-btn-ghost !px-4 !py-2 !text-[0.8rem]">
-            Sign in
-          </Link>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Link href="/login" className="bv-btn bv-btn-ghost !px-4 !py-2 !text-[0.8rem]">
+              Sign in
+            </Link>
+          </div>
         </nav>
       </header>
 

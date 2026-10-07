@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Icon } from "@/components/icon-registry";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { learningPaths, guidedProjects, thinkingChallenges, debugChallenges } from "@/content";
 
 export const metadata: Metadata = {
@@ -37,6 +38,7 @@ export default function Home() {
             ))}
           </div>
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <Link href="/login" className="bv-btn bv-btn-ghost !px-4 !py-2 !text-[0.8rem]">
               Sign in
             </Link>
