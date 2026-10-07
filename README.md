@@ -1,0 +1,100 @@
+# BuilderVerse
+
+**Learn. Think. Build.** — an interactive programming learning platform where students learn by *doing*: read a concept, run the code in an in-browser lab, solve puzzles, debug real errors, ship guided projects, and turn ideas into a public portfolio.
+
+Built as a portfolio/interview project with a production-shaped stack: **Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · SQLite · Server Actions**.
+
+> Fully self-contained: no external services required. Builder AI (chat tutor) activates only when you provide an OpenAI-compatible API key.
+
+---
+
+## Quick start
+
+```bash
+npm install
+npm run dev          # http://localhost:3000
+```
+
+The SQLite database is created automatically on first request at `data/builderverse.db`.
+
+| Script | What it does |
+| --- | --- |
+| `npm run dev` | Dev server (Turbopack) |
+| `npm run build` | Production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | ESLint (`next lint` is gone in Next 16) |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run test:e2e` | Playwright end-to-end suite (builds + serves on port 3111) |
+
+### Optional: enable Builder AI
+
+```bash
+cp .env.example .env.local
+# set AI_API_KEY (and optionally AI_BASE_URL, AI_MODEL)
+```
+
+Without a key the assistant explains exactly how to enable it and every other feature keeps working.
+
+---
+
+## What's inside
+
+| Area | What you get |
+| --- | --- |
+| **Learn** | 6 paths (HTML, CSS, JavaScript, DOM, APIs, Git) · 27 lessons, each with explanation, analogy, runnable example, try-it lab, challenge, common mistakes and a quiz |
+| **Thinking Gym** | 10 reasoning puzzles graded against model answers — plain English, no code needed |
+| **Error Companion** | 10 real-world bug puzzles (typos, `==` coercion, off-by-one, `missing await`, specificity…): diagnose first, then reveal |
+| **Guided builds** | 5 step-by-step projects (Calculator, Weather App, Password Manager, Chat App, Portfolio) with checklists and XP |
+| **Ideas Vault** | 20 product ideas with problem framing, MVP scope, difficulty and bookmarking |
+| **Builder AI** | Chat tutor with conversation history (env-configured, graceful fallback) |
+| **Gamification** | XP, 8 levels, 14 badges, daily missions, streaks, notifications, anti-farming rules |
+| **Profile & settings** | Public portfolio, headline/avatar, preferences, password change, account deletion |
+| **Search** | Content-wide search across lessons, projects, puzzles and ideas |
+
+Everything a learner does persists: session auth (httpOnly cookie, bcrypt), lesson progress, challenge attempts, checklists, bookmarks, portfolio and preferences.
+
+---
+
+## Project structure
+
+```
+src/
+  app/
+    page.tsx            # marketing landing
+    about/              # about page
+    (auth)/             # login, signup, forgot/reset password
+    (app)/              # authenticated shell (auth guard + sidebar/topbar/mobile nav)
+      dashboard/ learn/ think/ debug/ build/ ideas/ assistant/ search/ profile/ settings/
+    actions/            # server actions: auth, progress, account, ai
+  components/           # ui.tsx primitives, shell, client components per feature
+  content/              # curriculum AS CODE — all static content + search
+    lessons/            # per-path lesson content
+  lib/                  # db, auth, queries, gamification, matches, validation
+scripts/                # dev-login QA helper
+tests/                  # Playwright e2e
+docs/                   # architecture, features, database, interview cheat sheet
+```
+
+**Design rule:** content is code (typed TypeScript in `src/content/`), only *user data* lives in SQLite. See [docs/DATABASE.md](docs/DATABASE.md).
+
+---
+
+## Docs
+
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — layers, request flow, auth, XP rules, AI integration
+- [docs/FEATURES.md](docs/FEATURES.md) — every feature mapped to the file that implements it
+- [docs/DATABASE.md](docs/DATABASE.md) — schema, indexes, migration strategy
+- [docs/INTERVIEW.md](docs/INTERVIEW.md) — question-by-question cheat sheet for HR/tech interviews
+
+## Testing
+
+```bash
+npm run test:e2e
+```
+
+Four Playwright tests cover the marketing page, anonymous redirects, the **full learner journey** (signup → daily mission → lesson quiz → thinking puzzle → debug reveal → project checklist → bookmark → portfolio → settings → logout) and the mobile shell + dark mode + search.
+
+## Notes
+
+- `scripts/dev-login.ts` is a **development-only** helper that prints a valid session cookie for terminal smoke tests. Remove it before publishing.
+- Data lives in `data/` and is git-ignored; delete the file to reset all accounts.
