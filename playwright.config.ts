@@ -14,8 +14,11 @@ export default defineConfig({
     ...devices["Desktop Chrome"],
   },
   webServer: {
-    command: "npm run build && npm run start -- -p 3111",
+    // `next start` refuses to serve `output: "standalone"`, so build and then
+    // run the same standalone server the Docker image ships.
+    command: "npm run build && node scripts/e2e-server.mjs",
     url: "http://localhost:3111",
+    env: { PORT: "3111", HOSTNAME: "0.0.0.0" },
     reuseExistingServer: false,
     timeout: 300_000,
   },

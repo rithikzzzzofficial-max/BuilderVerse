@@ -43,3 +43,22 @@ jobs:
             playwright-report/
             test-results/
           retention-days: 7
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The Dockerfile can't be built on the dev machine (no Docker Desktop),
+      # so CI is where it gets verified.
+      - name: Build image
+        run: docker build -t builderverse:ci .
+
+      - name: Smoke test the container
+        run: |
+          docker run -d --name bv -p 3300:3000 builderverse:ci
+          for i in $(seq 1 30); do
+            if curl -fsS http://localhost:3300/api/health; then exit 0; fi
+            sleep 2
+          done
+          echo "health check never passed"; docker logs bv; exit 1

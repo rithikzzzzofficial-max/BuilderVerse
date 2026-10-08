@@ -70,9 +70,10 @@ src/
   content/              # curriculum AS CODE — all static content + search
     lessons/            # per-path lesson content
   lib/                  # db, auth, queries, gamification, matches, validation
-scripts/                # dev-login QA helper
 tests/                  # Playwright e2e
 docs/                   # architecture, features, database, interview cheat sheet
+Dockerfile              # multi-stage production image (standalone output)
+docker-compose.yml      # one-command deploy with a persistent data volume
 ```
 
 **Design rule:** content is code (typed TypeScript in `src/content/`), only *user data* lives in SQLite. See [docs/DATABASE.md](docs/DATABASE.md).
@@ -92,9 +93,32 @@ docs/                   # architecture, features, database, interview cheat shee
 npm run test:e2e
 ```
 
-Four Playwright tests cover the marketing page, anonymous redirects, the **full learner journey** (signup → daily mission → lesson quiz → thinking puzzle → debug reveal → project checklist → bookmark → portfolio → settings → logout) and the mobile shell + dark mode + search.
+Five Playwright tests cover the marketing page, anonymous redirects, the **full learner journey** (signup → daily mission → lesson quiz → thinking puzzle → debug reveal → project checklist → bookmark → portfolio → settings → logout), the mobile shell + dark mode + search, and an **exactly-one-h1 accessibility check across all 16 app routes**. CI runs lint, typecheck, build, the e2e suite and a Docker image build + container health-check on every push.
+
+## Deploy with Docker
+
+The production build uses Next.js `output: "standalone"`, so the image only contains what the server needs:
+
+```bash
+docker compose up -d --build    # http://localhost:3000
+docker compose logs -f          # watch it boot
+docker compose down             # stop (data volume is kept)
+```
+
+- The SQLite database lives in the `bv-data` named volume (`/app/data`), so it survives redeploys and image rebuilds.
+- `/api/health` returns 200 only when the process is up **and** SQLite responds — it drives the image's `HEALTHCHECK`.
+- Configuration is runtime env, not baked into the image: `DATABASE_PATH`, `APP_URL`, and optional `AI_API_KEY` / `AI_BASE_URL` / `AI_MODEL`.
+
+**On a VPS** (any $5 tier, or a free Oracle Cloud ARM instance):
+
+```bash
+git clone <your-repo> && cd <repo>
+docker compose up -d --build
+# then put nginx/Caddy in front for TLS, e.g. reverse-proxy :3000 → https://yourdomain
+```
+
+Why Docker and not Vercel: this app is built around a real SQLite file, and serverless filesystems are read-only/ephemeral — a self-hosted container keeps the stack honest (and gives you a Docker story to tell in interviews).
 
 ## Notes
 
-- `scripts/dev-login.ts` is a **development-only** helper that prints a valid session cookie for terminal smoke tests. Remove it before publishing.
 - Data lives in `data/` and is git-ignored; delete the file to reset all accounts.

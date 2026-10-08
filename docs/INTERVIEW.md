@@ -50,7 +50,11 @@ Answers you can say out loud. Every claim maps to code in this repo.
 
 ## "How is it tested?"
 
-> "`eslint` and `tsc --noEmit` for static checks, plus Playwright running against a **production build**. The main test signs up a fresh user and drives the real journey — mission, quiz, thinking puzzle, debug reveal, checklist, bookmark, portfolio, settings, logout — asserting real database-backed state changes. Two earlier failures were locator issues, not app bugs: strict-mode label collisions and a button whose `aria-label` changes on toggle."
+> "`eslint` and `tsc --noEmit` for static checks, plus Playwright running against a **production build**. The main test signs up a fresh user and drives the real journey — mission, quiz, thinking puzzle, debug reveal, checklist, bookmark, portfolio, settings, logout — asserting real database-backed state changes. Two earlier failures were locator issues, not app bugs: strict-mode label collisions and a button whose `aria-label` changes on toggle. GitHub Actions runs all of it plus a Docker image build + container health smoke test on every push."
+
+## "How would you deploy it?"
+
+> "As a Docker image built on Next.js `output: standalone` — a multi-stage Dockerfile (install, build, then a slim `node:22-bookworm-slim` runtime containing only traced files, running non-root). The SQLite file sits in a mounted volume so data survives redeploys, and `GET /api/health` — which pings the database — drives the container healthcheck. `docker compose up -d --build` is the entire deploy; CI builds the image and smoke-tests health on every push. I'd put Caddy or nginx in front for TLS. I deliberately skipped Vercel: its filesystem is read-only and ephemeral, so SQLite wouldn't be honest there — that trade-off is exactly why the config is env-driven and the DB layer is isolated."
 
 ## "What's in the database?"
 
@@ -65,7 +69,7 @@ Answers you can say out loud. Every claim maps to code in this repo.
 
 ## "What would you add next?"
 
-Real email delivery, Postgres + migrations for multi-user hosting, PWA/offline labs, per-learner spaced repetition, CI (GitHub Actions running lint/typecheck/e2e), i18n, and richer AI feedback like per-line code review.
+Real email delivery, Postgres + migrations for multi-user hosting, PWA/offline labs, per-learner spaced repetition, push-to-deploy (git tag → VPS rebuild), i18n, and richer AI feedback like per-line code review.
 
 ---
 

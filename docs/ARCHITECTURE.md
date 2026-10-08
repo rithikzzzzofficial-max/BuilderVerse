@@ -74,6 +74,13 @@ Design tokens (colors, radius, shadows, fonts) are declared as CSS custom proper
 - Playwright (`npm run test:e2e`) runs against a **production build**, driving real server actions and asserting DB-backed state changes (XP awarded, checklist toggled, portfolio row added, logout clears the session).
 - Two Playwright-safe pitfalls already solved: labels can resolve to multiple nodes (scope by role/section), and changing `aria-label` on a button makes label-based locators jump to a different element (scope to the card).
 
+## Deployment
+
+- `output: "standalone"` in `next.config.ts` produces `.next/standalone/server.js` with only the traced runtime files. The multi-stage `Dockerfile` (deps → builder → runner) copies that folder plus `public/` and `.next/static`, runs as the non-root `node` user, and `docker-compose.yml` mounts a named volume at `/app/data`.
+- `better-sqlite3` is a *server-external* package that resolves its native binding at runtime, which file tracing cannot follow — the Dockerfile copies that one package in explicitly, and CI builds the image so the setup is verified on every push.
+- `GET /api/health` returns 200 only when SQLite answers; it drives the image `HEALTHCHECK` and the CI container smoke test.
+- Runtime config is env, never baked in: `DATABASE_PATH`, `APP_URL`, optional `AI_*`. Not deployed to Vercel: serverless filesystems are read-only/ephemeral, which SQLite cannot use honestly.
+
 ## Deliberate trade-offs
 
 | Choice | Why |
