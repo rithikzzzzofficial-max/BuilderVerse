@@ -4,6 +4,8 @@
 
 Built as a portfolio/interview project with a production-shaped stack: **Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · SQLite · Server Actions**.
 
+[![CI](https://github.com/ritzs04/BuilderVerse/actions/workflows/ci.yml/badge.svg)](https://github.com/ritzs04/BuilderVerse/actions) [Live repo](https://github.com/ritzs04/BuilderVerse)
+
 > Fully self-contained: no external services required. Builder AI (chat tutor) activates only when you provide an OpenAI-compatible API key.
 
 ---
@@ -23,7 +25,7 @@ The SQLite database is created automatically on first request at `data/builderve
 | `npm run build` | Production build |
 | `npm run start` | Serve the production build |
 | `npm run lint` | ESLint (`next lint` is gone in Next 16) |
-| `npm run typecheck` | `tsc --noEmit` |
+| `npm run typecheck` | `next typegen && tsc --noEmit` (route types are generated, not committed) |
 | `npm run test:e2e` | Playwright end-to-end suite (builds + serves on port 3111) |
 
 ### Optional: enable Builder AI
@@ -112,7 +114,7 @@ docker compose down             # stop (data volume is kept)
 **On a VPS** (any $5 tier, or a free Oracle Cloud ARM instance):
 
 ```bash
-git clone <your-repo> && cd <repo>
+git clone https://github.com/ritzs04/BuilderVerse.git && cd BuilderVerse
 docker compose up -d --build
 # then put nginx/Caddy in front for TLS, e.g. reverse-proxy :3000 → https://yourdomain
 ```
